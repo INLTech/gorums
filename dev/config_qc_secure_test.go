@@ -44,7 +44,7 @@ func secsetup(t testing.TB, srvs regServers, remote bool) (func(n int), func(n i
 	for i, rs := range srvs {
 		if rs.addr == "" {
 			portSupplier.Lock()
-			rs.addr = fmt.Sprintf(":%d", portSupplier.p)
+			rs.addr = fmt.Sprintf("localhost:%d", portSupplier.p)
 			portSupplier.p++
 			portSupplier.Unlock()
 		}
@@ -65,7 +65,7 @@ func secsetup(t testing.TB, srvs regServers, remote bool) (func(n int), func(n i
 		go func(i int, server *grpc.Server) {
 			_ = server.Serve(listeners[i])
 		}(i, servers[i])
-		srvs[i].addr = "localhost" + rs.addr
+		srvs[i].addr = rs.addr
 	}
 
 	stopGrpcServeFunc := func(n int) {
