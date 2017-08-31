@@ -144,7 +144,7 @@ func (c *Configuration) readPrelim(ctx context.Context, a *ReadRequest, resp *Re
 				break
 			}
 			replyValues = append(replyValues, r.reply)
-			reply, rlevel, quorum = c.qspec.ReadPrelimQF(replyValues)
+			reply, rlevel, quorum = c.qspec.ReadPrelimQF(a, replyValues)
 			if quorum {
 				resp.set(reply, rlevel, nil, true)
 				return

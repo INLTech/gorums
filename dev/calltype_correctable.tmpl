@@ -146,11 +146,7 @@ type {{.UnexportedTypeName}} struct {
 				break
 			}
 			replyValues = append(replyValues, r.reply)
-{{- if .QFWithReq}}
 			reply, rlevel, quorum = c.qspec.{{.MethodName}}QF(a, replyValues)
-{{else}}
-			reply, rlevel, quorum = c.qspec.{{.MethodName}}QF(replyValues)
-{{end -}}
 			if quorum {
 				resp.set(reply, rlevel, nil, true)
 				return

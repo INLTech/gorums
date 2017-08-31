@@ -77,11 +77,7 @@ func (c *Configuration) {{.UnexportedMethodName}}(ctx context.Context, a *{{.FQR
 				ti.tr.LazyLog(&payload{sent: false, id: r.nid, msg: r.reply}, false)
 			}
 			replyValues = append(replyValues, r.reply)
-{{- if .QFWithReq}}
 			if resp, quorum = c.qspec.{{.MethodName}}QF(a, replyValues); quorum {
-{{else}}
-			if resp, quorum = c.qspec.{{.MethodName}}QF(replyValues); quorum {
-{{end -}}
 				return resp, nil
 			}
 		case <-ctx.Done():

@@ -308,7 +308,6 @@ type serviceMethod struct {
 	CorrectablePrelim bool
 	Future            bool
 	Multicast         bool
-	QFWithReq         bool
 	PerNodeArg        bool
 
 	ServName        string // Redundant, but keeps it simple.
@@ -420,7 +419,6 @@ func verifyExtensionsAndCreate(service string, method *pb.MethodDescriptorProto)
 		Correctable:       hasCorrectableExtension(method),
 		CorrectablePrelim: hasCorrectablePRExtension(method),
 		Multicast:         hasMulticastExtension(method),
-		QFWithReq:         hasQFWithReqExtension(method),
 		PerNodeArg:        hasPerNodeArgExtension(method),
 		CustomReturnType:  getCustomReturnTypeExtension(method),
 	}
@@ -454,13 +452,6 @@ func verifyExtensionsAndCreate(service string, method *pb.MethodDescriptorProto)
 		return nil, fmt.Errorf(
 			"%s.%s: cannot combine non-quorum call method with the '%s' option",
 			service, method.GetName(), custRetName(),
-		)
-
-	case !isQuorumCallVariant && sm.QFWithReq:
-		// only QC variants need to process replies
-		return nil, fmt.Errorf(
-			"%s.%s: cannot combine non-quorum call method with the '%s' option",
-			service, method.GetName(), qfreqName(),
 		)
 
 	case sm.Multicast && !method.GetClientStreaming():

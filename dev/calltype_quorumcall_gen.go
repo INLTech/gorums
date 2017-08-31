@@ -79,7 +79,7 @@ func (c *Configuration) read(ctx context.Context, a *ReadRequest) (resp *State, 
 				ti.tr.LazyLog(&payload{sent: false, id: r.nid, msg: r.reply}, false)
 			}
 			replyValues = append(replyValues, r.reply)
-			if resp, quorum = c.qspec.ReadQF(replyValues); quorum {
+			if resp, quorum = c.qspec.ReadQF(a, replyValues); quorum {
 				return resp, nil
 			}
 		case <-ctx.Done():
@@ -177,7 +177,7 @@ func (c *Configuration) readCustomReturn(ctx context.Context, a *ReadRequest) (r
 				ti.tr.LazyLog(&payload{sent: false, id: r.nid, msg: r.reply}, false)
 			}
 			replyValues = append(replyValues, r.reply)
-			if resp, quorum = c.qspec.ReadCustomReturnQF(replyValues); quorum {
+			if resp, quorum = c.qspec.ReadCustomReturnQF(a, replyValues); quorum {
 				return resp, nil
 			}
 		case <-ctx.Done():
@@ -376,7 +376,7 @@ func (c *Configuration) writePerNode(ctx context.Context, a *State, f func(arg S
 				ti.tr.LazyLog(&payload{sent: false, id: r.nid, msg: r.reply}, false)
 			}
 			replyValues = append(replyValues, r.reply)
-			if resp, quorum = c.qspec.WritePerNodeQF(replyValues); quorum {
+			if resp, quorum = c.qspec.WritePerNodeQF(a, replyValues); quorum {
 				return resp, nil
 			}
 		case <-ctx.Done():

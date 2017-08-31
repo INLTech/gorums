@@ -27,10 +27,6 @@ func mcastName() string {
 	return gorumsproto.E_Multicast.Name
 }
 
-func qfreqName() string {
-	return gorumsproto.E_QfWithReq.Name
-}
-
 func custRetName() string {
 	return gorumsproto.E_CustomReturnType.Name
 }
@@ -84,17 +80,6 @@ func hasFutureExtension(method *descriptor.MethodDescriptorProto) bool {
 		return false
 	}
 	value, err := proto.GetExtension(method.Options, gorumsproto.E_QcFuture)
-	if err != nil {
-		return false
-	}
-	return checkExtensionBoolValue(value)
-}
-
-func hasQFWithReqExtension(method *descriptor.MethodDescriptorProto) bool {
-	if method.Options == nil {
-		return false
-	}
-	value, err := proto.GetExtension(method.Options, gorumsproto.E_QfWithReq)
 	if err != nil {
 		return false
 	}

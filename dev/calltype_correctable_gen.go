@@ -146,7 +146,7 @@ func (c *Configuration) readCorrectable(ctx context.Context, a *ReadRequest, res
 				break
 			}
 			replyValues = append(replyValues, r.reply)
-			reply, rlevel, quorum = c.qspec.ReadCorrectableQF(replyValues)
+			reply, rlevel, quorum = c.qspec.ReadCorrectableQF(a, replyValues)
 			if quorum {
 				resp.set(reply, rlevel, nil, true)
 				return

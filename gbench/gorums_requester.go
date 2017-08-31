@@ -132,19 +132,19 @@ func newRegisterQSpec(rq, wq int) rpc.QuorumSpec {
 	}
 }
 
-func (rqs *registerQSpec) ReadQF(replies []*rpc.State) (*rpc.State, bool) {
+func (rqs *registerQSpec) ReadQF(_ *rpc.ReadRequest, replies []*rpc.State) (*rpc.State, bool) {
 	if len(replies) < rqs.rq {
 		return nil, false
 	}
 	return replies[0], true
 }
 
-func (rqs *registerQSpec) ReadFutureQF(replies []*rpc.State) (*rpc.State, bool) {
-	return rqs.ReadQF(replies)
+func (rqs *registerQSpec) ReadFutureQF(r *rpc.ReadRequest, replies []*rpc.State) (*rpc.State, bool) {
+	return rqs.ReadQF(r, replies)
 }
 
-func (rqs *registerQSpec) ReadCustomReturnQF(replies []*rpc.State) (*rpc.MyState, bool) {
-	state, ok := rqs.ReadQF(replies)
+func (rqs *registerQSpec) ReadCustomReturnQF(r *rpc.ReadRequest, replies []*rpc.State) (*rpc.MyState, bool) {
+	state, ok := rqs.ReadQF(r, replies)
 	if !ok {
 		return nil, false
 	}
@@ -156,11 +156,11 @@ func (rqs *registerQSpec) ReadCustomReturnQF(replies []*rpc.State) (*rpc.MyState
 	return myState, ok
 }
 
-func (rqs *registerQSpec) ReadCorrectableQF(replies []*rpc.State) (*rpc.State, int, bool) {
+func (rqs *registerQSpec) ReadCorrectableQF(_ *rpc.ReadRequest, replies []*rpc.State) (*rpc.State, int, bool) {
 	panic("not implemented")
 }
 
-func (rqs *registerQSpec) ReadPrelimQF(replies []*rpc.State) (*rpc.State, int, bool) {
+func (rqs *registerQSpec) ReadPrelimQF(_ *rpc.ReadRequest, replies []*rpc.State) (*rpc.State, int, bool) {
 	panic("not implemented")
 }
 
@@ -175,7 +175,7 @@ func (rqs *registerQSpec) WriteFutureQF(req *rpc.State, replies []*rpc.WriteResp
 	return rqs.WriteQF(req, replies)
 }
 
-func (rqs *registerQSpec) WritePerNodeQF(replies []*rpc.WriteResponse) (*rpc.WriteResponse, bool) {
+func (rqs *registerQSpec) WritePerNodeQF(req *rpc.State, replies []*rpc.WriteResponse) (*rpc.WriteResponse, bool) {
 	if len(replies) < rqs.wq {
 		return nil, false
 	}

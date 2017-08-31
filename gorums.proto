@@ -12,8 +12,7 @@ extend google.protobuf.MethodOptions {
 	bool correctable_pr	= 50002;
 	bool multicast		= 50003;
 	bool qc_future		= 50004;
-	bool qf_with_req	= 50005;
-	bool per_node_arg	= 50006;
+	bool per_node_arg	= 50006; // TODO this is sensitive to changes; how to recompile so that field numbers can change.
 
 	string custom_return_type = 51000;
 }

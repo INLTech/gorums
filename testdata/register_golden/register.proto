@@ -49,20 +49,14 @@ service Register {
 	}
 
 	// Write is a synchronous quorum call.
-	// The request argument (State) is passed to the associated
-	// quorum function, WriteQF, for this method.
 	rpc Write(State) returns (WriteResponse) {
 		option (gorums.qc)		= true;
-		option (gorums.qf_with_req)	= true;
 	}
 
 	// WriteFuture is an asynchronous quorum call that 
 	// returns a future object for retrieving results.
-	// The request argument (State) is passed to the associated
-	// quorum function, WriteFutureQF, for this method.
 	rpc WriteFuture(State) returns (WriteResponse) {
 		option (gorums.qc_future)	= true;
-		option (gorums.qf_with_req)	= true;
 	}
 
 	// WriteAsync is an asynchronous multicast to all nodes in a configuration.

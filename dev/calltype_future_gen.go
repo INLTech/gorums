@@ -117,7 +117,7 @@ func (c *Configuration) readFuture(ctx context.Context, a *ReadRequest, resp *Re
 				ti.tr.LazyLog(&payload{sent: false, id: r.nid, msg: r.reply}, false)
 			}
 			replyValues = append(replyValues, r.reply)
-			if reply, quorum = c.qspec.ReadFutureQF(replyValues); quorum {
+			if reply, quorum = c.qspec.ReadFutureQF(a, replyValues); quorum {
 				resp.State, resp.err = reply, nil
 				return
 			}

@@ -250,11 +250,7 @@ type {{.UnexportedTypeName}} struct {
 				break
 			}
 			replyValues = append(replyValues, r.reply)
-{{- if .QFWithReq}}
 			reply, rlevel, quorum = c.qspec.{{.MethodName}}QF(a, replyValues)
-{{else}}
-			reply, rlevel, quorum = c.qspec.{{.MethodName}}QF(replyValues)
-{{end -}}
 			if quorum {
 				resp.set(reply, rlevel, nil, true)
 				return
@@ -427,11 +423,7 @@ type {{.UnexportedTypeName}} struct {
 				break
 			}
 			replyValues = append(replyValues, r.reply)
-{{- if .QFWithReq}}
 			reply, rlevel, quorum = c.qspec.{{.MethodName}}QF(a, replyValues)
-{{else}}
-			reply, rlevel, quorum = c.qspec.{{.MethodName}}QF(replyValues)
-{{end -}}
 			if quorum {
 				resp.set(reply, rlevel, nil, true)
 				return
@@ -599,11 +591,7 @@ type {{.UnexportedTypeName}} struct {
 				ti.tr.LazyLog(&payload{sent: false, id: r.nid, msg: r.reply}, false)
 			}
 			replyValues = append(replyValues, r.reply)
-{{- if .QFWithReq}}
 			if reply, quorum = c.qspec.{{.MethodName}}QF(a, replyValues); quorum {
-{{else}}
-			if reply, quorum = c.qspec.{{.MethodName}}QF(replyValues); quorum {
-{{end -}}
 				resp.{{.CustomRespName}}, resp.err = reply, nil
 				return
 			}
@@ -746,11 +734,7 @@ func (c *Configuration) {{.UnexportedMethodName}}(ctx context.Context, a *{{.FQR
 				ti.tr.LazyLog(&payload{sent: false, id: r.nid, msg: r.reply}, false)
 			}
 			replyValues = append(replyValues, r.reply)
-{{- if .QFWithReq}}
 			if resp, quorum = c.qspec.{{.MethodName}}QF(a, replyValues); quorum {
-{{else}}
-			if resp, quorum = c.qspec.{{.MethodName}}QF(replyValues); quorum {
-{{end -}}
 				return resp, nil
 			}
 		case <-ctx.Done():
@@ -869,13 +853,8 @@ type QuorumSpec interface {
 {{- if .Future}}
 	// {{.MethodName}}QF is the quorum function for the {{.MethodName}}
 	// asynchronous quorum call method.
-{{- end -}}
-
-{{- if .QFWithReq}}
+{{- end}}
 	{{.MethodName}}QF(req *{{.FQReqName}}, replies []*{{.FQRespName}}) (*{{.FQCustomRespName}}, bool)
-{{else}}
-	{{.MethodName}}QF(replies []*{{.FQRespName}}) (*{{.FQCustomRespName}}, bool)
-{{end}}
 {{end -}}
 
 {{- if or (.Correctable) (.CorrectablePrelim)}}
@@ -887,14 +866,8 @@ type QuorumSpec interface {
 {{if .CorrectablePrelim}}
 	// {{.MethodName}}QF is the quorum function for the {{.MethodName}} 
 	// correctable prelim quourm call method.
-{{- end -}}
-
-{{- if .QFWithReq}}
+{{- end}}
 	{{.MethodName}}QF(req *{{.FQReqName}}, replies []*{{.FQRespName}}) (*{{.FQCustomRespName}}, int, bool)
-{{else}}
-	{{.MethodName}}QF(replies []*{{.FQRespName}}) (*{{.FQCustomRespName}}, int, bool)
-{{end}}
-
 {{end -}}
 {{- end -}}
 }
